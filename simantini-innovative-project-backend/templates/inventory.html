@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Inventory Management</h1>
+    <h2>Current Inventory</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item['id'] }}</td>
+            <td>{{ item['item_name'] }}</td>
+            <td>{{ item['quantity'] }}</td>
+            <td>₹{{ item['price'] }}</td>
+            <td>
+                <form action="{{ url_for('inventory') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="delete_item_id" value="{{ item['id'] }}">
+                    <button type="submit" class="button delete-btn">Delete</button>
+                </form>
+                <form action="{{ url_for('inventory') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="item_id" value="{{ item['id'] }}">
+                    <input type="number" name="quantity" placeholder="New Quantity" required>
+                    <input type="number" step="0.01" name="price" placeholder="New Price" required>
+                    <button type="submit" class="button update-btn">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h3>Total Quantity: {{ total_quantity }}</h3>
+    <h3>Total Value: ₹{{ total_price }}</h3>
+
+    <h2>Add New Item</h2>
+    <form action="{{ url_for('inventory') }}" method="POST">
+        <input type="text" name="item_name" placeholder="Item Name" required>
+        <input type="number" name="quantity" placeholder="Quantity" required>
+        <input type="number" step="0.01" name="price" placeholder="Price" required>
+        <button type="submit" class="button">Add Item</button>
+    </form>
+
+    <h2>Stock Taken Records</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity Taken</th>
+            <th>Date & Time</th>
+            <th>Actions</th>
+        </tr>
+        {% for item in stock_taken %}
+        <tr>
+            <td>{{ item['id'] }}</td>
+            <td>{{ item['item_name'] }}</td>
+            <td>{{ item['quantity_taken'] }}</td>
+            <td>{{ item['taken_at'] }}</td>
+            <td>
+                <form action="{{ url_for('inventory') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="delete_stock_taken_id" value="{{ item['id'] }}">
+                    <button type="submit" class="button delete-btn">Delete Record</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h2>Take Stock</h2>
+    <form action="{{ url_for('inventory') }}" method="POST">
+        <select name="item_id_taken" required>
+            {% for item in items %}
+            <option value="{{ item['id'] }}">{{ item['item_name'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="number" name="quantity_taken" placeholder="Quantity Taken" required>
+        <button type="submit" class="button">Take Stock</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ICS LOGIN - INVENTORY CONTROL SYSTEM</title>
+    <style>
+        *, ::before, ::after {
+            box-sizing: border-box;
+        }
+
+        body, h1, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background-image: url('/static/123.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loginHeader {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .loginHeader h1 {
+            font-size: 80px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .loginHeader p {
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #333;
+        }
+
+        .loginHeader p:after {
+            content: '';
+            display: block;
+            height: 4px;
+            background: #47a0a8ea;
+            width: 50%;
+            margin: 10px auto 0 auto;
+        }
+
+        .loginBody {
+            background-color: rgba(255, 192, 203, 0.85);
+            padding: 40px;
+            border-radius: 10px;
+            border: 5px solid rgba(8, 1, 8, 0.64);
+            width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .loginInputsContainer {
+            margin-top: 20px;
+        }
+
+        .loginInputsContainer label {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .loginInputsContainer input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #120111;
+            border-radius: 5px;
+            font-size: 18px;
+            font-style: italic;
+            text-align: center;
+            outline: none;
+        }
+
+        .loginInputsContainer input:focus {
+            border-color: #47a0a8ea;
+        }
+
+        .loginButtonContainer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .loginButtonContainer button {
+            background: #47a0a8ea;
+            padding: 10px 30px;
+            font-size: 18px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .loginButtonContainer button:hover {
+            background-color: #35808e;
+        }
+
+        @media (max-width: 768px) {
+            .loginBody {
+                width: 300px;
+                padding: 30px;
+            }
+
+            .loginHeader h1 {
+                font-size: 60px;
+            }
+
+            .loginHeader p {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loginHeader">
+            <h1>ICS</h1>
+            <p>Inventory Control System</p>
+        </div>
+        <div class="loginBody">
+            <form action="{{ url_for('login') }}" method="post">
+                <div class="loginInputsContainer">
+                    <label for="username">USERNAME</label>
+                    <input placeholder="username" type="text" id="username" name="username" />
+                </div>
+                <div class="loginInputsContainer">
+                    <label for="password">PASSWORD</label>
+                    <input placeholder="password" type="password" id="password" name="password" />
+                </div>
+                <div class="loginButtonContainer">
+                    <button type="submit">login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
