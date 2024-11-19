@@ -14,6 +14,7 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# Initialize the database
 with get_db_connection() as conn:
     conn.execute('''CREATE TABLE IF NOT EXISTS inventory (
                       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,47 +48,6 @@ def login():
             return render_template('login.html', error="Invalid username or password.")
     return render_template('login.html')
 
-@app.route('/inventory', methods=['GET', 'POST'])
-def inventory():
-    if 'logged_in' in session:
-        conn = get_db_connection()
-        if request.method == 'POST':
-            if 'item_name' in request.form and 'quantity' in request.form and 'price' in request.form:
-                item_name = request.form['item_name']
-                quantity = int(request.form['quantity'])
-                price = float(request.form['price'])
-                conn.execute('INSERT INTO inventory (item_name, quantity, price) VALUES (?, ?, ?)', 
-                             (item_name, quantity, price))
-                conn.commit()
-            elif 'item_id_taken' in request.form and 'quantity_taken' in request.form:
-                item_id_taken = int(request.form['item_id_taken'])
-                quantity_taken = int(request.form['quantity_taken'])
-                conn.execute('UPDATE inventory SET quantity = quantity - ? WHERE id = ?', 
-                             (quantity_taken, item_id_taken))
-                item = conn.execute('SELECT item_name FROM inventory WHERE id = ?', (item_id_taken,)).fetchone()
-                if item:
-                    item_name = item['item_name']
-                    conn.execute('INSERT INTO stock_taken (item_id, item_name, quantity_taken, taken_at) VALUES (?, ?, ?, ?)', 
-                                 (item_id_taken, item_name, quantity_taken, datetime.now()))
-                conn.commit()
-            elif 'delete_item_id' in request.form:
-                delete_item_id = int(request.form['delete_item_id'])
-                conn.execute('DELETE FROM inventory WHERE id = ?', (delete_item_id,))
-                conn.commit()
-            elif 'delete_stock_taken_id' in request.form:
-                delete_stock_taken_id = int(request.form['delete_stock_taken_id'])
-                conn.execute('DELETE FROM stock_taken WHERE id = ?', (delete_stock_taken_id,))
-                conn.commit()
-
-        items = conn.execute('SELECT * FROM inventory').fetchall()
-        stock_taken = conn.execute('SELECT * FROM stock_taken ORDER BY taken_at DESC').fetchall()
-        total_quantity = sum([item['quantity'] for item in items])
-        total_price = sum([item['quantity'] * item['price'] for item in items])
-        conn.close()
-        return render_template('inventory.html', items=items, total_quantity=total_quantity, total_price=total_price, stock_taken=stock_taken)
-    else:
-        return redirect(url_for('login'))
-
 @app.route('/user', methods=['GET'])
 def user_view():
     if 'logged_in_user' in session:
@@ -99,15 +59,27 @@ def user_view():
         taken_quantities = [row['quantity_taken'] for row in stock_taken]
         dates = [row['taken_at'][:10] for row in stock_taken]
 
-        plt.figure(figsize=(10, 5))
-        plt.bar(dates, taken_quantities, color='blue')
-        plt.title('Taken Out vs In Stock (Last 30 Days)')
-        plt.xlabel('Date')
-        plt.ylabel('Quantity Taken')
-        plt.xticks(rotation=45)
+        # Convert dates to datetime objects for better plotting
+        dates = [datetime.strptime(date, '%Y-%m-%d') for date in dates]
 
+        # Generate the line plot
+        plt.figure(figsize=(10, 5))
+        plt.plot(dates, taken_quantities, color='blue', marker='o', linestyle='-', label='Quantity Taken')
+        plt.title('Stock Taken (Last 30 Days)', fontsize=14)
+        plt.xlabel('Date', fontsize=12)
+        plt.ylabel('Quantity Taken', fontsize=12)
+        plt.grid(True, linestyle='--', alpha=0.6)
+        plt.xticks(rotation=45)
+        plt.legend()
+
+        # Set a background image for the plot
+        img_background = plt.imread('background_image.jpg')  # Ensure this file exists
+        plt.imshow(img_background, aspect='auto', extent=[min(dates), max(dates), 0, max(taken_quantities)],
+                   alpha=0.2, zorder=0)
+
+        # Save the graph to a BytesIO object
         img = io.BytesIO()
-        plt.savefig(img, format='png')
+        plt.savefig(img, format='png', bbox_inches='tight')
         img.seek(0)
         graph_url = base64.b64encode(img.getvalue()).decode()
 
