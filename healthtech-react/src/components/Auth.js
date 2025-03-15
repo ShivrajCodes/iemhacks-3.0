@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, db, setDoc, doc } from "../firebase";
+import googleLogo from "../assets/google-logo.png";
+import MagicCard from "./MagicCard"; // Import MagicCard
 
 const Auth = ({ setIsAuthenticated }) => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -11,7 +13,6 @@ const Auth = ({ setIsAuthenticated }) => {
   const [bloodGroup, setBloodGroup] = useState("");
   const [healthInfo, setHealthInfo] = useState("");
 
-  // Sign in with Google
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -21,7 +22,6 @@ const Auth = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Register with Google
   const handleGoogleRegister = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -39,7 +39,6 @@ const Auth = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Sign in with Email
   const handleEmailSignIn = async (e) => {
     e.preventDefault();
     try {
@@ -50,7 +49,6 @@ const Auth = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Register with Email
   const handleEmailRegister = async (e) => {
     e.preventDefault();
     try {
@@ -70,88 +68,104 @@ const Auth = ({ setIsAuthenticated }) => {
 
   return (
     <AuthContainer>
-      <h1>{isRegistering ? "Register" : "Sign In"}</h1>
+      <MagicCard>
+        <h2>👋🏻 Hi! Welcome to HealthSync - your one-stop solution for all your basic health-related needs</h2>
 
-      <GoogleButton onClick={isRegistering ? handleGoogleRegister : handleGoogleSignIn}>
-        {isRegistering ? "Register" : "Sign In"} with Google
-      </GoogleButton>
+        <GoogleButton onClick={isRegistering ? handleGoogleRegister : handleGoogleSignIn}>
+          <GoogleIcon src={googleLogo} alt="Google Logo" />
+          {isRegistering ? "Register" : "Sign In"} with Google
+        </GoogleButton>
 
-      <h3>OR</h3>
+        <h3>OR</h3>
 
-      <Form onSubmit={isRegistering ? handleEmailRegister : handleEmailSignIn}>
-        {isRegistering && (
-          <>
-            <Input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
-            <Input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} required />
-            <Input type="text" placeholder="Blood Group" value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)} required />
-            <TextArea placeholder="Health Information" value={healthInfo} onChange={(e) => setHealthInfo(e.target.value)} required />
-          </>
-        )}
-        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <Button type="submit">{isRegistering ? "Register" : "Sign In"} with Email</Button>
-      </Form>
+        <Form onSubmit={isRegistering ? handleEmailRegister : handleEmailSignIn}>
+          {isRegistering && (
+            <>
+              <Input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+              <Input type="number" placeholder="Age" value={age} onChange={(e) => setAge(e.target.value)} required />
+              <Input type="text" placeholder="Blood Group" value={bloodGroup} onChange={(e) => setBloodGroup(e.target.value)} required />
+              <TextArea placeholder="Health Information" value={healthInfo} onChange={(e) => setHealthInfo(e.target.value)} required />
+            </>
+          )}
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <Button type="submit">{isRegistering ? "Register" : "Sign In"} with Email</Button>
+        </Form>
 
-      <ToggleLink onClick={() => setIsRegistering(!isRegistering)}>
-        {isRegistering ? "Already have an account? Sign in" : "New user? Register here"}
-      </ToggleLink>
+        <ToggleLink onClick={() => setIsRegistering(!isRegistering)}>
+          {isRegistering ? "Already have an account? Sign in" : "New user? Register here"}
+        </ToggleLink>
+      </MagicCard>
     </AuthContainer>
   );
 };
 
 export default Auth;
 
-// Styled Components (CSS inside the same file)
+// Styled Components (✅ Added Missing Styles)
+
 const AuthContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
-  color: white;
-  text-align: center;
 `;
 
 const GoogleButton = styled.button`
-  background-color: red;
-  color: white;
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: bold;
   border: none;
-  padding: 10px;
-  width: 80%;
+  padding: 12px;
+  width: 100%;
   cursor: pointer;
-  margin: 10px 0;
+  margin: 15px 0;
   border-radius: 5px;
+  font-size: 16px;
+`;
+
+const GoogleIcon = styled.img`
+  width: 20px;
+  height: 20px;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
 `;
 
 const Input = styled.input`
   margin: 10px 0;
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   border: none;
+  font-size: 16px;
 `;
 
 const TextArea = styled.textarea`
   margin: 10px 0;
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   border: none;
   height: 80px;
+  font-size: 16px;
 `;
 
 const Button = styled.button`
   background-color: blue;
   color: white;
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
 `;
 
 const ToggleLink = styled.p`

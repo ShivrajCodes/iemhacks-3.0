@@ -5,8 +5,8 @@ import logo from "../assets/logo.png"; // Replace with your actual logo path
 const SplashScreen = ({ setShowSplash }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 10000);
+      setShowSplash(false); // Directly move to the next page after 6s
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -15,6 +15,7 @@ const SplashScreen = ({ setShowSplash }) => {
     <Container>
       <Logo src={logo} alt="Logo" />
       <Tagline>Your Health, Our Priority</Tagline>
+      <SubText>Personalizing Your Experience</SubText>
       <DotsContainer>
         <Dot />
         <Dot delay="0.2s" />
@@ -40,7 +41,7 @@ const Container = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 120px;
+  width: 300px; /* Medium-sized logo */
   height: auto;
   margin-bottom: 20px;
 `;
@@ -48,6 +49,12 @@ const Logo = styled.img`
 const Tagline = styled.h1`
   font-size: 1.8rem;
   font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const SubText = styled.p`
+  font-size: 1.2rem;
+  font-weight: 500;
   margin-bottom: 20px;
 `;
 
