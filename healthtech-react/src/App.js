@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
-import Auth from "./components/Auth"; // Replacing Signup with Auth
+import Auth from "./components/Auth";
 import Dashboard from "./components/Dashboard";
+import ChronicDiseases from "./components/ChronicDiseases";
+import NonChronicDiseases from "./components/NonChronicDiseases";
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -12,13 +15,17 @@ function App() {
   }
 
   return (
-    <div>
+    <Router>
       {!isAuthenticated ? (
         <Auth setIsAuthenticated={setIsAuthenticated} />
       ) : (
-        <Dashboard setIsAuthenticated={setIsAuthenticated} />
+        <Routes>
+          <Route path="/" element={<Dashboard setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/chronic-diseases" element={<ChronicDiseases />} />
+          <Route path="/non-chronic-diseases" element={<NonChronicDiseases />} />
+        </Routes>
       )}
-    </div>
+    </Router>
   );
 }
 
