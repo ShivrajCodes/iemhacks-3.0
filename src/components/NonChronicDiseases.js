@@ -6,61 +6,61 @@ const nonChronicDiseases = [
     name: "Influenza", 
     about: "Viral infection causing fever, chills, cough, and fatigue.", 
     remedy: "Rest, hydration, and antiviral medications if prescribed.", 
-    image: "https://source.unsplash.com/100x100/?flu,virus"
+    image: "/images/influenza.png"
   },
   { 
     name: "Common Cold", 
     about: "Mild viral respiratory infection causing congestion and sore throat.", 
     remedy: "Plenty of fluids, rest, and vitamin C-rich foods.", 
-    image: "https://source.unsplash.com/100x100/?cold,medicine"
+    image: "/images/commoncold.png"
   },
   { 
     name: "Food Poisoning", 
     about: "Illness caused by contaminated food, leading to nausea and diarrhea.", 
     remedy: "Hydration, probiotics, and electrolyte replenishment.", 
-    image: "https://source.unsplash.com/100x100/?food,sickness"
+    image: "/images/foodpoisoning.png"
   },
   { 
     name: "Malaria", 
     about: "Mosquito-borne disease causing fever, chills, and sweating.", 
     remedy: "Antimalarial drugs and protective mosquito nets.", 
-    image: "https://source.unsplash.com/100x100/?mosquito,fever"
+    image: "/images/malaria.png"
   },
   { 
     name: "Typhoid", 
     about: "Bacterial infection from contaminated food or water.", 
     remedy: "Antibiotics, proper hydration, and rest.", 
-    image: "https://source.unsplash.com/100x100/?bacteria,medicine"
+    image: "/images/typhoid.png"
   },
   { 
     name: "Dengue", 
     about: "Viral infection spread by mosquitoes, causing fever and body aches.", 
     remedy: "Hydration, fever control, and mosquito bite prevention.", 
-    image: "https://source.unsplash.com/100x100/?mosquito,disease"
+    image: "/images/dengue.png"
   },
   { 
     name: "Pneumonia", 
     about: "Lung infection causing breathing difficulty and fever.", 
     remedy: "Antibiotics (if bacterial), rest, and oxygen therapy if needed.", 
-    image: "https://source.unsplash.com/100x100/?lungs,infection"
+    image: "/images/pneumonia.png"
   },
   { 
     name: "Chickenpox", 
     about: "Highly contagious viral infection causing itchy blisters.", 
     remedy: "Calamine lotion, antihistamines, and staying hydrated.", 
-    image: "https://source.unsplash.com/100x100/?rash,virus"
+    image: "/images/chickenpox.png"
   },
   { 
     name: "Measles", 
     about: "Viral infection with rash, fever, and cough.", 
     remedy: "Vitamin A supplements and fever management.", 
-    image: "https://source.unsplash.com/100x100/?measles,rash"
+    image: "/images/measles.png"
   },
   { 
     name: "Tonsillitis", 
     about: "Inflammation of the tonsils causing sore throat.", 
     remedy: "Warm saltwater gargles, pain relievers, and antibiotics if needed.", 
-    image: "https://source.unsplash.com/100x100/?throat,pain"
+    image: "/images/tonsil.png"
   },
 ];
 
@@ -87,7 +87,6 @@ const NonChronicDiseases = () => {
   );
 };
 
-// Add CSS inside the same file
 const styles = `
 .disease-container {
   background-color: #87CEFA;
@@ -161,7 +160,6 @@ p {
   font-size: 14px;
 }
 
-/* Ensure Background Stays Uniform Even on Scroll */
 html, body {
   background-color: #87CEFA;
   margin: 0;
@@ -170,7 +168,7 @@ html, body {
 }
 `;
 
-// Inject CSS into the document
+
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
